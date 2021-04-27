@@ -13,6 +13,10 @@
         <element id="directory" name="classes">
           <element id="module-output" name="JavaWeb04" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.18.20" />
+          <element id="library" level="project" name="Maven: dom4j:dom4j:1.1" />
+        </element>
       </element>
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/target/JavaWeb04-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
