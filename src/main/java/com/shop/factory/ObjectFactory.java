@@ -11,7 +11,11 @@ import java.util.Map;
 
 /** 对象工厂 @Author: QTX @Date: 2021/4/27 */
 public class ObjectFactory {
-  public static Map<String, Object> objectsMap = new HashMap<>();
+  private static Map<String, Object> objectsMap = new HashMap<>();
+
+  public static Object getObj(String name) {
+    return objectsMap.get(name);
+  }
 
   static {
     SAXReader reader = new SAXReader();
@@ -29,6 +33,7 @@ public class ObjectFactory {
         String aClass = element.attributeValue("class");
         // 反射创建对象
         Object o = Class.forName(aClass).newInstance();
+
         objectsMap.put(name, o);
       }
     } catch (DocumentException | ClassNotFoundException e) {

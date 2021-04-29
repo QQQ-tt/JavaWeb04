@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <objects>
-  <object name="" class=""/>
-  <object name="" class=""/>
-  <object name="" class=""/>
+  <object name="TransAction" class="com.shop.transaction.impl.TransActionImpl"/>
+  <object name="UserDao" class="com.shop.dao.impl.UserDaoImpl"/>
+  <object name="CommentDao" class="com.shop.dao.impl.CommentDaoImpl"/>
+  <object name="UserService" class="com.shop.service.impl.UserServiceImpl"/>
+  <object name="CommService" class="com.shop.service.impl.CommentServiceImpl"/>
 </objects>

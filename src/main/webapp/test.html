@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script type="text/javascript" src="html/scripts/jquery.js"></script>
+  <script type="text/javascript">
+    /*
+      jq实现ajax
+
+    */
+    function regist() {
+      var $uname = $("#uname").val();
+      $.ajax({
+        url: "StuServlet",
+        method: "post",
+        data: "uname=" + $uname,
+        success: function (result, testStatus) {
+          if (result == "true") {
+            alert("已存在！！！");
+          } else {
+            alert("可以注册！！！");
+          }
+        },
+        error: function (xhr, errorMessage, e) {
+          alert("服务器错误。。。");
+        }
+
+      });
+
+      /* 针对于post请求 */
+      /* $.get(
+          "StuServlet",
+          "uname="+$uname,
+          function (result){
+            if(result=="true"){
+              alert("已存在，，，");
+            }else{
+              alert("注册成功，，，");
+            }
+          },
+          "text"
+      ); */
+
+
+      /* 针对于get请求 */
+
+      /* $.post(
+          "StuServlet",
+          "uname="+$uname,
+          function (result){
+            if(result=="true"){
+              alert("已存在，，，");
+            }else{
+              alert("注册成功，，，");
+            }
+          },
+          "text"
+      ); */
+
+      // $("#err").load(
+      //     "StuServlet",
+      //     "uname=" + $uname
+      // );
+
+    }
+
+
+  </script>
+</head>
+<body>
+<input type="text" name="uname" id="uname">
+<span id="err"></span>
+<br>
+<input type="button" value="提交" onclick="regist()"/>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<objects>
+  <object name="html/login" method="login" class="com.shop.action.UserAction">
+    <result name="generalUser" type="sendRedirect">reg-result.html</result>
+    <result name="administrator" type="sendRedirect">manage/index.html</result>
+  </object>
+  <object name="loginUser" method="loginUser" class="com.shop.action.UserAction"/>
+  <object name="empty" method="empty" class="com.shop.action.UserAction"/>
+  <object name="html/addMessage" method="addMessage" class="com.shop.action.CommentAction">
+    <result name="success" type="sendRedirect">guestbook.html</result>
+  </object>
+</objects>
