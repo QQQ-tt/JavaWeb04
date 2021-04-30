@@ -6,8 +6,15 @@
     <result name="administrator" type="sendRedirect">manage/index.html</result>
   </object>
   <object name="loginUser" method="loginUser" class="com.shop.action.UserAction"/>
+  <object name="html/loginUser" method="loginUser" class="com.shop.action.UserAction"/>
   <object name="empty" method="empty" class="com.shop.action.UserAction"/>
   <object name="html/addMessage" method="addMessage" class="com.shop.action.CommentAction">
     <result name="success" type="sendRedirect">guestbook.html</result>
+  </object>
+  <object name="html/comm" method="queryComms" class="com.shop.action.CommentAction"/>
+  <object name="html/pageNum" method="pageNum" class="com.shop.action.CommentAction"/>
+  <object name="html/logging" method="logging" class="com.shop.action.UserAction">
+    <result name="success" type="sendRedirect">index.html</result>
+    <result name="error" type="dispatcher">register.html</result>
   </object>
 </objects>

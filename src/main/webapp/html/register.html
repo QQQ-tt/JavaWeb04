@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <title>易买网 - 首页</title>
   <link type="text/css" rel="stylesheet" href="css/style.css"/>
-  <script type="text/javascript" src="scripts/function.js"></script>
+
 </head>
 <body>
 <div id="header" class="wrap">
@@ -53,12 +53,12 @@
         <li class="current"><em></em>填写注册信息</li>
         <li class="last"><em></em>注册成功</li>
       </ul>
-      <form id="regForm" method="post" action="add" onsubmit="return checkForm(this);">
+      <form id="regForm" method="post" action="logging" onsubmit="return checkForm(this);">
         <table>
           <tr>
             <td class="field">用户名：</td>
-            <td><input class="text" type="text" name="name" onfocus="FocusItem(this)"
-                       onblur="CheckItem(this);"/><span></span></td>
+            <td><input id="name" class="text" type="text" name="name" onfocus="FocusItem(this)"
+                       onblur="f1(this);"/><span></span></td>
           </tr>
           <tr>
             <td class="field">登录密码：</td>
@@ -67,7 +67,7 @@
           </tr>
           <tr>
             <td class="field">确认密码：</td>
-            <td><input class="text" type="password" name="rePassWord" onfocus="FocusItem(this)"
+            <td><input class="text" type="password" id="passWord2" name="rePassWord" onfocus="FocusItem(this)"
                        onblur="CheckItem(this);"/><span></span></td>
           </tr>
           <tr>
@@ -88,5 +88,31 @@
 <div id="footer">
   Copyright &copy; 2010 南京网博 All Rights Reserved. 京ICP证1000001号
 </div>
+<script type="text/javascript" src="scripts/function.js"></script>
+<script type="text/javascript" src="scripts/jquery.js"></script>
+<script type="text/javascript" src="scripts/login.js"></script>
+<script>
+  function f1(obj) {
+    var val = $("#name").val();
+    if (val !== "") {
+      alert(1)
+      $.ajax({
+        url: 'logging',
+        type: 'post',
+        data: 'name=' + val,
+        dataType: 'json',
+        success: function (data) {
+          alert(data);
+          if (data.MyException != null) {
+            $("#name").siblings().text(data.MyException);
+          }
+        }
+      })
+    } else {
+      alert(2)
+      CheckItem(this);
+    }
+  }
+</script>
 </body>
 </html>

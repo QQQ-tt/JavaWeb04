@@ -1,43 +1,13 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <title>易买网 - 首页</title>
-  <link type="text/css" rel="stylesheet" href="html/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="html/css/style.css"/>
   <script type="text/javascript" src="html/scripts/function.js"></script>
   <script type="text/javascript" src="html/scripts/jquery.js"></script>
-  <script>
-    function f() {
-      $.ajax({
-        url: 'loginUser',
-        type: 'post',
-        dataType: 'json',
-        success: function (data) {
-          if (data.name != null) {
-            $("#login").text(data.name).attr("href", "javascript:;");
-            $("#logging").text("退出").attr("href", "javascript:;").click(function () {
-              empty();
-            })
-          }
-        },
-        error: function () {
-          alert("失败");
-        }
-      })
-    }
-
-    function empty() {
-      $.ajax({
-        url: "empty",
-        type: "past",
-        success: function () {
-          $("#login").text("登录").attr("href", "html/login.html");
-        }
-      })
-    }
-
-    f();
-  </script>
+  <script type="text/javascript" src="html/scripts/login.js"></script>
 </head>
 <body>
 <div id="header" class="wrap">

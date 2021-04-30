@@ -22,9 +22,9 @@ public class CommentDaoImpl implements CommentDao {
 
   @SneakyThrows
   @Override
-  public List select() {
-    String sql = "select * from easy_buy_comment";
-    return JdbcTemplate.executeQuery(sql, new CommentRowsMapper(), null);
+  public List select(int page) {
+    String sql = "select * from easy_buy_comment limit ?,?";
+    return JdbcTemplate.executeQuery(sql, new CommentRowsMapper(), (page - 1) * 2, 2);
   }
 
   @SneakyThrows
@@ -32,6 +32,13 @@ public class CommentDaoImpl implements CommentDao {
   public void update(String content, int id) {
     String sql = "update easy_buy_comment set ec_reply = ?,ec_reply_time = ? where ec_id = ?";
     JdbcTemplate.executeUpdate(sql, content, time(), id);
+  }
+
+  @SneakyThrows
+  @Override
+  public int select() {
+    String sql = "select * from easy_buy_comment";
+    return JdbcTemplate.executeQuery(sql, new CommentRowsMapper(), null).size();
   }
 
   public String time() {

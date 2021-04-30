@@ -22,22 +22,29 @@ public class UserAction {
    * @return 视图
    */
   public String login() {
+    JSONObject jsonObject = new JSONObject();
     HttpServletRequest request = ActionContext.getActionContext().getRequest();
     String name = request.getParameter("name");
     String password = request.getParameter("passWord");
     String login = "";
+    PrintWriter out = null;
     try {
+      out = ActionContext.getActionContext().getResponse().getWriter();
       login = userService.login(name, password);
+      if (login.equals(UserStatus.generalUser.status)) {
+        request.getSession().setAttribute("name", name);
+        return "generalUser";
+      } else {
+        request.getSession().setAttribute("name", name);
+        return "administrator";
+      }
     } catch (MyException e) {
-      request.setAttribute("MyException", e.getMessage());
+      jsonObject.put("MyException", e.getMessage());
+      out.print(JSONObject.toJSONString(jsonObject));
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-    if (login.equals(UserStatus.generalUser.status)) {
-      request.getSession().setAttribute("name", name);
-      return "generalUser";
-    } else {
-      request.getSession().setAttribute("name", name);
-      return "administrator";
-    }
+    return null;
   }
 
   /** 登录后网页用户名展示 */
@@ -48,21 +55,40 @@ public class UserAction {
     if (request.getSession().getAttribute("name") != null) {
       jsonObject.put("name", request.getSession().getAttribute("name"));
     }
-    PrintWriter out = null;
     try {
-      out = response.getWriter();
+      PrintWriter out = out = response.getWriter();
       out.print(JSONObject.toJSONString(jsonObject));
       System.out.println(JSONObject.toJSONString(jsonObject));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /** 退出登录删除Session里的用户名 */
+  public void empty() {
+    HttpServletRequest request = ActionContext.getActionContext().getRequest();
+    request.getSession().removeAttribute("name");
+  }
+
+  /** 注册用户 */
+  public String logging() {
+    JSONObject jsonObject = new JSONObject();
+    HttpServletRequest request = ActionContext.getActionContext().getRequest();
+    String name = request.getParameter("name");
+    String passWord = request.getParameter("rePassWord");
+    PrintWriter out = null;
+    try {
+      out = ActionContext.getActionContext().getResponse().getWriter();
+      userService.registration(name, passWord);
+    } catch (MyException e) {
+      request.getSession().setAttribute("MyException", e.getMessage());
+      jsonObject.put("MyException", request.getSession().getAttribute("MyException"));
+      out.print(JSONObject.toJSONString(jsonObject));
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
       out.close();
     }
-  }
-
-  /** 退出删除Session里的用户名 */
-  public void empty() {
-    HttpServletRequest request = ActionContext.getActionContext().getRequest();
-    request.getSession().removeAttribute("name");
+    return "success";
   }
 }

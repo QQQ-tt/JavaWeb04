@@ -5,12 +5,12 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <title>易买网 - 首页</title>
   <link type="text/css" rel="stylesheet" href="css/style.css"/>
-  <script type="text/javascript" src="scripts/function.js"></script>
 </head>
 <body>
 <div id="header" class="wrap">
   <div id="logo"><img src="images/logo.gif"/></div>
-  <div class="help"><a href="#" class="shopping">购物车</a><a href="login.html">登录</a><a href="register.html">注册</a><a
+  <div class="help"><a href="#" class="shopping">购物车</a><a href="login.html" id="login">登录</a><a href="register.html"
+                                                                                                 id="logging">注册</a><a
       href="guestbook.html">留言</a></div>
   <div class="navbar">
     <ul class="clearfix">
@@ -76,40 +76,15 @@
   <div class="main">
     <div class="guestbook">
       <h2>全部留言</h2>
-      <ul>
-        <li>
-          <dl>
-            <dt>那个什么衣服贵吗</dt>
-            <dd class="author">网友：张三丰 <span class="timer">2010:10:10 20:00:01</span></dd>
-            <dd>那个什么衣服贵吗</dd>
-            <dd>不贵</dd>
-          </dl>
-        </li>
-        <li>
-          <dl>
-            <dt>那个什么衣服贵吗</dt>
-            <dd class="author">网友：张三丰 <span class="timer">2010:10:10 20:00:01</span></dd>
-            <dd>不贵</dd>
-          </dl>
-        </li>
-        <li>
-          <dl>
-            <dt>那个什么衣服贵吗</dt>
-            <dd class="author">网友：张三丰 <span class="timer">2010:10:10 20:00:01</span></dd>
-            <dd>不贵</dd>
-          </dl>
-        </li>
+      <ul id="comm">
+
       </ul>
       <div class="clear"></div>
       <div class="pager">
         <ul class="clearfix">
-          <li><a href="#">上一页</a></li>
-          <li class="current">1</li>
-          <li><a href="#">2</a></li>
-          <li><a href="#">3</a></li>
-          <li><a href="#">4</a></li>
-          <li><a href="#">5</a></li>
-          <li><a href="#">下一页</a></li>
+          <li><a href="javascript:;">上一页</a></li>
+
+          <li id="last"><a href="javascript:;">下一页</a></li>
         </ul>
       </div>
       <div id="reply-box">
@@ -129,7 +104,7 @@
             </tr>
             <tr>
               <td></td>
-              <td><label class="ui-blue"><input type="submit" name="submit" value="提交留言"/></label></td>
+              <td><label class="ui-blue"><input id="sub" type="submit" name="submit" value="提交留言"/></label></td>
             </tr>
           </table>
         </form>
@@ -141,5 +116,72 @@
 <div id="footer">
   Copyright &copy; 2010 南京网博 All Rights Reserved. 京ICP证1000001号
 </div>
+<script type="text/javascript" src="scripts/function.js"></script>
+<script type="text/javascript" src="scripts/jquery.js"></script>
+<script type="text/javascript" src="scripts/login.js"></script>
+<script type="text/javascript">
+  let page = 1;
+
+  function pageNum() {
+    $.ajax({
+      url: 'pageNum',
+      type: 'post',
+      dataType: 'json',
+      success: function (data) {
+        var len = 0;
+        if (data.num % 2 === 0) {
+          len = data.num / 2;
+        } else {
+          len = data.num / 2 + 0.5;
+        }
+        for (let j = 1; j < len + 1; j++) {
+          const option = '<li className="current"><a class="page" href="javascript:;">' + j + '</a></li>';
+          $("#last").before(option);
+        }
+        $(".page").click(function () {
+          var text = $(this).text();
+          page = text;
+          $("#comm").empty();
+          sub();
+        })
+      }
+    })
+  }
+
+  pageNum();
+  sub();
+
+  function sub() {
+    $.ajax({
+      url: 'comm',
+      type: 'post',
+      data: 'page=' + page,
+      dataType: 'json',
+      success: function (data) {
+        $(data).each(function () {
+          if (this.reply != null) {
+            reply = this.reply;
+          } else {
+            reply = "";
+          }
+          var option = '<li>' +
+              '<dl>' +
+              '<dt>' + this.title + '</dt>' +
+              '<dd className="author">网友：' + this.name + ' <span className="timer">' + this.createTime + '</span></dd>' +
+              '<dd>' + this.content + '</dd>' +
+              '<dd>' + reply + '</dd>' +
+              '</dl>' +
+              '</li>'
+          $("#comm").append(option);
+        })
+      }
+    })
+  }
+
+  $("#sub").click(function () {
+    sub();
+  })
+
+</script>
 </body>
 </html>

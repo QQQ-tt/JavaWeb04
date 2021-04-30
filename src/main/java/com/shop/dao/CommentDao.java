@@ -17,8 +17,9 @@ public interface CommentDao {
    * 展示所有留言
    *
    * @return
+   * @param page
    */
-  List select();
+  List select(int page);
 
   /**
    * 回复
@@ -27,4 +28,11 @@ public interface CommentDao {
    * @param id 留言信息id
    */
   void update(String content, int id);
+
+  /**
+   * 查询数据条数
+   *
+   * @return
+   */
+  int select();
 }

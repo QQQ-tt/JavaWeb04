@@ -7,7 +7,6 @@ import org.dom4j.io.SAXReader;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -19,10 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /** @Author: QTX @Date: 2021/4/26 */
-@WebFilter(
-    filterName = "actionFilter",
-    urlPatterns = {"/*"},
-    initParams = {@WebInitParam(name = "charset", value = "utf-8")})
+@WebFilter(filterName = "actionFilter", urlPatterns = "/*")
 public class ActionFilter implements Filter {
 
   private Map<String, ActionConfig> actionConfigMap = new HashMap();
@@ -30,8 +26,6 @@ public class ActionFilter implements Filter {
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
-    String charset = filterConfig.getInitParameter("charset");
-    this.charset = charset;
     SAXReader reader = new SAXReader();
 
     try {
@@ -71,14 +65,19 @@ public class ActionFilter implements Filter {
       throws IOException, ServletException {
     HttpServletRequest req = (HttpServletRequest) request;
     HttpServletResponse resp = (HttpServletResponse) response;
-    req.setCharacterEncoding(this.charset);
-    resp.setContentType("text/html;charset=utf-8");
+    req.setCharacterEncoding("utf-8");
+    // 获取地址栏中请求的action名称
+    String uri = req.getRequestURI();
+    if (uri.contains(".css") || uri.contains(".js") || uri.contains(".png")) {
+      // response.setContentType("text/css;charset=utf-8");
+    } else {
+      // 处理响应乱码
+      response.setContentType("text/html;charset=utf-8");
+    }
     // 封装请求的消息头
     ActionContext ac = new ActionContext(resp, req);
     // 将封装请求的消息头存放到线程本地变量中
     ActionContext.setActionContext(ac);
-    // 获取地址栏中请求的action名称
-    String uri = req.getRequestURI();
 
     String resUrl = uri.substring(req.getContextPath().length() + 1);
     System.out.println(resUrl);
@@ -109,12 +108,11 @@ public class ActionFilter implements Filter {
         if ("dispatcher".equals(rcfig.getType())) {
           // 转发
           req.getRequestDispatcher(rcfig.getPath()).forward(req, resp);
-
         } else {
           // 重定向
+          System.out.println(req.getContextPath() + rcfig.getPath());
           resp.sendRedirect(req.getContextPath() + rcfig.getPath());
         }
-
       } catch (ClassNotFoundException | InvocationTargetException e) {
         e.printStackTrace();
       } catch (InstantiationException e) {

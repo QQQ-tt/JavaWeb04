@@ -22,9 +22,17 @@ public class CommentServiceImpl implements CommService {
   }
 
   @Override
-  public List reveal() {
+  public List reveal(int page) {
     action.begin();
-    List select = commentDao.select();
+    List select = commentDao.select(page);
+    action.commit();
+    return select;
+  }
+
+  @Override
+  public int reveal() {
+    action.begin();
+    int select = commentDao.select();
     action.commit();
     return select;
   }

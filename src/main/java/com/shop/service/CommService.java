@@ -14,11 +14,19 @@ public interface CommService {
   void leaveComments(String name, String title, String context);
 
   /**
-   * 展示留言
+   * 展示对应页数的留言
    *
    * @return 留言结果集
+   * @param page 页数
    */
-  List reveal();
+  List reveal(int page);
+
+  /**
+   * 显示总数量
+   *
+   * @return 总数量
+   */
+  int reveal();
 
   /**
    * 回复内容

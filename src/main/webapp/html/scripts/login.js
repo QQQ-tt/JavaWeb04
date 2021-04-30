@@ -1,17 +1,30 @@
-import './jquery.js'
-
 function f() {
   $.ajax({
     url: 'loginUser',
     type: 'post',
-    data: 'data',
     dataType: 'json',
     success: function (data) {
-      alert("name" + data.name);
-      alert(1);
+      if (data.name != null) {
+        $("#login").text(data.name).attr("href", "javascript:;");
+        $("#logging").text("退出").attr("href", "javascript:;").click(function () {
+          empty();
+        })
+      }
+    },
+    error: function () {
+      alert("失败");
     }
   })
 }
 
+function empty() {
+  $.ajax({
+    url: "empty",
+    type: "post",
+    success: function () {
+      $("#login").text("登录").attr("href", "html/login.html");
+    }
+  })
+}
 
 f();
